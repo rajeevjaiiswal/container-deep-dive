@@ -1,0 +1,79 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: neworder-svc
+  labels:
+    app: neworder
+spec:
+  #type: LoadBalancer
+  type: NodePort
+  ports:
+  - port: 8080
+  selector:
+    app: neworder
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: newinventory-svc
+  labels:
+    app: newinventory
+spec:
+  #type: LoadBalancer
+  #type: NodePort
+  ports:
+  - port: 8081
+  selector:
+    app: newinventory
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dep-neworder
+  labels:
+    app: neworder
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: neworder
+  template:
+    metadata:
+      labels:
+        app: neworder
+    spec:
+      containers:
+      - name: container-neworder
+        image: rajeevjaiiswal/order:latest
+        env:
+          - name: Inventory
+            value: "http://newinventory-svc:8081"
+          - name: Payment
+            value: "http://payment-svc:8082"
+          - name: Dispatch
+            value: "http://dispatch-svc:8083"
+        ports:
+        - containerPort: 8080
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dep-newinventory
+  labels:
+    app: newinventory
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: newinventory
+  template:
+    metadata:
+      labels:
+        app: newinventory
+    spec:
+      containers:
+      - name: container-newinventory
+        image: rajeevjaiiswal/newinventory:latest
+        ports:
+        - containerPort: 8081

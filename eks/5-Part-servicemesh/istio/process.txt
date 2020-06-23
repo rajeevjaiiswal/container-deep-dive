@@ -1,0 +1,23 @@
+====================
+Generate Traffic
+====================
+
+watch curl -s -o /dev/null http://aeb80b12b43404414bfb1a14e7095a57-1515628331.ap-south-1.elb.amazonaws.com
+
+
+
+=================================
+Istio objects
+=================================
+ 
+ -> Gateway : Istio Gateway (host and Port). LB from istio-ingressgateway
+
+Get LB from istio-ingressgatewa:
+
+kubectl -n istio-system get svc istio-ingressgateway
+
+
+->VirtualService : to control traffic to actual service and routing %
+
+
+->DestinationRule : Mapping to pods (multiple)

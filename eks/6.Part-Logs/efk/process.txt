@@ -1,0 +1,72 @@
+=>Enable EKS logs
+--------------------------------------------
+
+
+=>EKS Node Group Instance Role update for Log Access (CloudWatch)
+RoleName: eksctl-eksworkshop-eksctl-nodegro-NodeInstanceRole-R94N0XE81BI9
+
+Role Update:
+
+cat <<EoF > k8s-logs-policy.json
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Action": [
+                "logs:DescribeLogGroups",
+                "logs:DescribeLogStreams",
+                "logs:CreateLogGroup",
+                "logs:CreateLogStream",
+                "logs:PutLogEvents"
+            ],
+            "Resource": "*",
+            "Effect": "Allow"
+        }
+    ]
+}
+EoF
+
+aws iam put-role-policy --role-name eksctl-eksworkshop-eksctl-nodegro-NodeInstanceRole-R94N0XE81BI9 --policy-name Logs-Policy-For-Worker --policy-document file://k8s-logs-policy.json
+
+--------------------------------------------
+
+=>Create ElasticSearch
+
+--------------------------------------------
+
+
+=>Download fluentD (Download and update Region and CLusterName)
+
+Download from : wget https://eksworkshop.com/intermediate/230_logging/deploy.files/fluentd.yml
+
+Update:
+
+
+env:
+      - name: REGION
+        value: ap-south-1
+      - name: CLUSTER_NAME
+        value: aws-test-cluster
+
+=>Deploy fluentd.yaml
+
+kubectl apply -f fluentd.yaml
+
+Verify : kubectl get pods -w --namespace=kube-system
+
+
+--------------------------------------------
+
+=>Create Log Stream:
+
+Go to Log Group, select eks log group. Action ->Stream to Amazon ElasticSearch
+
+--------------------------------------------
+=>Access Kibana
+
+index (management) - cwl-*
+
+
+
+
+

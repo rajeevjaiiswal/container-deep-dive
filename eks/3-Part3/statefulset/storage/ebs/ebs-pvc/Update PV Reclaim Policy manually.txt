@@ -1,0 +1,4 @@
+Update PV Reclaim Policy manually :
+
+
+kubectl patch pv <PV ID> -p '{"spec":{"persistentVolumeReclaimPolicy":"Retain"}}'

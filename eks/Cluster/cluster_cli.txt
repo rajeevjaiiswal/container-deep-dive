@@ -1,0 +1,53 @@
+CLI ->   
+
+eksctl create cluster \
+--name mycluster \
+--region ap-south-1 \
+--nodegroup-name my-ng \
+--node-type t3.medium \
+--nodes 2 \
+--nodes-min 1 \
+--nodes-max 10 \
+--managed \
+--asg-access
+
+
+
+
+
+Node group IAM policy:
+
+This command give node group required IAM access on autoscalability group API-
+
+
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Action": [
+                "autoscaling:DescribeAutoScalingGroups",
+                "autoscaling:DescribeAutoScalingInstances",
+                "autoscaling:DescribeLaunchConfigurations",
+                "autoscaling:DescribeTags",
+                "autoscaling:SetDesiredCapacity",
+                "autoscaling:TerminateInstanceInAutoScalingGroup",
+                "ec2:DescribeLaunchTemplateVersions"
+            ],
+            "Resource": "*",
+            "Effect": "Allow"
+        }
+    ]
+}
+
+
+Auto Scaling group tags
+The Cluster Autoscaler requires the following tags on your node group Auto Scaling groups so that they can be auto-discovered.
+
+If you used the previous eksctl commands to create your node groups, these tags are automatically applied. If not, you must manually tag your Auto Scaling groups with the following tags. For more information, see Tagging your Amazon EC2 resources in the Amazon EC2 User Guide for Linux Instances.
+
+Key	                                            Value
+k8s.io/cluster-autoscaler/<cluster-name>       owned
+k8s.io/cluster-autoscaler/enabled              true
+
+kubernetes.io/cluster-autoscaler/<cluster-name>       owned
+kubernetes.io/cluster-autoscaler/enabled              true

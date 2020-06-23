@@ -1,0 +1,67 @@
+
+======================
+Install istioctl
+======================
+
+echo 'export ISTIO_VERSION="1.5.2"' >> ${HOME}/.bash_profile
+source ${HOME}/.bash_profile
+
+
+curl -L https://istio.io/downloadIstio | sh -
+
+
+cd <istio folder>
+
+sudo cp -v bin/istioctl /usr/local/bin/
+
+Verify:
+
+ istioctl version --remote=false
+
+
+======================
+Install istio
+======================
+
+istioctl manifest apply --set profile=demo
+
+Vwerify Service:
+kubectl -n istio-system get svc
+
+Verify Pods:
+kubectl -n istio-system get pods
+
+===================
+Istio Profiles:
+=====================
+
+istioctl profile list
+
+istioctl profile dump demo
+
+=========================
+Enable Istio for app/namespace
+==========================
+
+kubectl create namespace testns
+kubectl label namespace testns istio-injection=enabled
+
+ kubectl get ns testns --show-labels
+
+
+
+
+================================
+Access Kiali
+===============================
+
+Access KIALI : kubectl port-forward svc/kiali 20001:20001 -n istio-system
+
+or update Kiali service for nodeport
+
+kubectl -n istio-system edit svc kiali
+
+
+
+
+

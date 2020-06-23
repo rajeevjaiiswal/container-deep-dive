@@ -1,0 +1,36 @@
+Deploy Container (POD, RS, Deployment): 
+
+        RUN CMD:
+
+                kubectl run inventory --image=rajeevjaiiswal/inventory --port=8801 
+
+        Delete: 
+        
+                kubectl delete deployment inventory
+
+    
+
+        Expose Service:
+
+                kubectl expose deployment inventory --type=NodePort --name=inventory-service
+
+        Delete :
+
+                kubectl delete service inventory-service
+
+
+
+
+Generate YAML File:
+
+        From GET cmd:
+
+                kubectl get deployment inventory -o yaml --export > deployment.yaml
+
+        RUN CMD:
+
+                kubectl run inventory --image=rajeevjaiiswal/inventory -o yaml --dry-run > deployment.yaml
+
+                kubectl expose deployment inventory --type=NodePort --name=inventory-service -o yaml --dry-run > deployment.yaml
+
+

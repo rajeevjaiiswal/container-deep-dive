@@ -1,0 +1,198 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: order-svc
+  namespace: testns
+  labels:
+    app: order
+spec:
+  #type: LoadBalancer
+  #type: NodePort
+  ports:
+  - port: 8080
+  selector:
+    app: order
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: inventory-svc
+  namespace: testns
+  labels:
+    app: inventory
+spec:
+  #type: LoadBalancer
+  #type: NodePort
+  ports:
+  - port: 8081
+  selector:
+    app: inventory
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: payment-svc
+  namespace: testns
+  labels:
+    app: payment
+spec:
+  #type: LoadBalancer
+  #type: NodePort
+  ports:
+  - port: 8082
+  selector:
+    app: payment
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: dispatch-svc
+  namespace: testns
+  labels:
+    app: dispatch
+spec:
+  #type: LoadBalancer
+  #type: NodePort
+  ports:
+  - port: 8083
+  selector:
+    app: dispatch
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: order
+  namespace: testns
+  labels:
+    app: order
+    version: v1
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: order
+      version: v1
+  template:
+    metadata:
+      labels:
+        app: order
+        version: v1
+    spec:
+      containers:
+      - name: container-order
+        image: rajeevjaiiswal/order:latest
+        env:
+          - name: Inventory
+            value: "http://inventory-svc.testns.svc.cluster.local:8081"
+          - name: Payment
+            value: "http://payment-svc.testns.svc.cluster.local:8082"
+          - name: Dispatch
+            value: "http://dispatch-svc.testns.svc.cluster.local:8083"
+        ports:
+        - containerPort: 8080
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: inventory-v1
+  namespace: testns
+  labels:
+    app: inventory
+    version: v1
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: inventory
+      version: v1
+  template:
+    metadata:
+      labels:
+        app: inventory
+        version: v1
+    spec:
+      containers:
+      - name: container-inventory
+        image: rajeevjaiiswal/inventory:v1
+        ports:
+        - containerPort: 8081
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: inventory-v2
+  namespace: testns
+  labels:
+    app: inventory
+    version: v2
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: inventory
+      version: v2
+  template:
+    metadata:
+      labels:
+        app: inventory
+        version: v2
+    spec:
+      containers:
+      - name: container-inventory
+        image: rajeevjaiiswal/inventory:v2
+        ports:
+        - containerPort: 8081
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: payment
+  namespace: testns
+  labels:
+    app: payment
+    version: v1
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: payment
+      version: v1
+  template:
+    metadata:
+      labels:
+        app: payment
+        version: v1
+    spec:
+      containers:
+      - name: container-payment
+        image: rajeevjaiiswal/payment:latest
+        ports:
+        - containerPort: 8082
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dispatch
+  namespace: testns
+  labels:
+    app: dispatch
+    version: v1
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: dispatch
+      version: v1
+  template:
+    metadata:
+      labels:
+        app: dispatch
+        version: v1
+    spec:
+      containers:
+      - name: container-dispatch
+        image: rajeevjaiiswal/dispatch:latest
+        ports:
+        - containerPort: 8083
+  

@@ -1,0 +1,39 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: dotnetcore-svc
+  labels:
+    app: dotnetcore
+spec:
+  #type: LoadBalancer
+  type: NodePort
+  ports:
+  - port: 8081
+  selector:
+    app: dotnetcore
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dep-dotnetcore
+  labels:
+    app: dotnetcore
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: dotnetcore
+  template:
+    metadata:
+      labels:
+        app: dotnetcore
+    spec:
+      containers:
+      - name: container-dotnetcore
+        image: rajeevjaiiswal/dotnetcore:latest
+        ports:
+        - containerPort: 8081
+        
+  

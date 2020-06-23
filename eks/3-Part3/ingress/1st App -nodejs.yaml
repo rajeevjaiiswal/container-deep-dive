@@ -1,0 +1,152 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: order-svc
+  labels:
+    app: order
+spec:
+  #type: LoadBalancer
+  type: NodePort
+  ports:
+  - port: 8080
+  selector:
+    app: order
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: inventory-svc
+  labels:
+    app: inventory
+spec:
+  #type: LoadBalancer
+  #type: NodePort
+  ports:
+  - port: 8081
+  selector:
+    app: inventory
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: payment-svc
+  labels:
+    app: payment
+spec:
+  #type: LoadBalancer
+  #type: NodePort
+  ports:
+  - port: 8082
+  selector:
+    app: payment
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: dispatch-svc
+  labels:
+    app: dispatch
+spec:
+  #type: LoadBalancer
+  #type: NodePort
+  ports:
+  - port: 8083
+  selector:
+    app: dispatch
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dep-order
+  labels:
+    app: order
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: order
+  template:
+    metadata:
+      labels:
+        app: order
+    spec:
+      containers:
+      - name: container-order
+        image: rajeevjaiiswal/order:latest
+        env:
+          - name: Inventory
+            value: "http://inventory-svc:8081"
+          - name: Payment
+            value: "http://payment-svc:8082"
+          - name: Dispatch
+            value: "http://dispatch-svc:8083"
+        ports:
+        - containerPort: 8080
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dep-inventory
+  labels:
+    app: inventory
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: inventory
+  template:
+    metadata:
+      labels:
+        app: inventory
+    spec:
+      containers:
+      - name: container-inventory
+        image: rajeevjaiiswal/inventory:latest
+        ports:
+        - containerPort: 8081
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dep-payment
+  labels:
+    app: payment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: payment
+  template:
+    metadata:
+      labels:
+        app: payment
+    spec:
+      containers:
+      - name: container-payment
+        image: rajeevjaiiswal/payment:latest
+        ports:
+        - containerPort: 8082
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dep-dispatch
+  labels:
+    app: dispatch
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: dispatch
+  template:
+    metadata:
+      labels:
+        app: dispatch
+    spec:
+      containers:
+      - name: container-dispatch
+        image: rajeevjaiiswal/dispatch:latest
+        ports:
+        - containerPort: 8083
+  

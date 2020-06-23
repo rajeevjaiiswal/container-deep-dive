@@ -1,0 +1,46 @@
+kubectl create namespace mysql
+
+
+
+
+Verify Statefulset:   kubectl -n mysql rollout status statefulset mysql
+
+
+
+List PVs : kubectl -n mysql get pvc -l app=mysql
+
+
+
+
+Connect to MySQL:
+
+Write : Node 0
+
+kubectl -n mysql run mysql-client --image=mysql:5.7 -i --rm --restart=Never --\
+  mysql -h mysql-0.mysql <<EOF
+CREATE DATABASE test;
+CREATE TABLE test.messages (message VARCHAR(250));
+INSERT INTO test.messages VALUES ('hello, from mysql-client');
+EOF
+
+
+Read: 
+
+kubectl -n mysql run mysql-client --image=mysql:5.7 -it --rm --restart=Never --\
+  mysql -h mysql-read -e "SELECT * FROM test.messages"
+
+
+Read - LB:
+
+kubectl -n mysql run mysql-client-loop --image=mysql:5.7 -i -t --rm --restart=Never --\
+   bash -ic "while sleep 1; do mysql -h mysql-read -e 'SELECT @@server_id,NOW()'; done"
+
+
+
+
+Delete All :
+kubectl delete namespace mysql
+
+
+
+

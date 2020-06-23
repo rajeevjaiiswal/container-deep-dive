@@ -1,0 +1,9 @@
+# Default values for myAPI.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+replicaCount: 
+  firstService: 1
+  secondService:  2
+
+

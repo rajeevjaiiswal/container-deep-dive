@@ -1,0 +1,15 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: Gateway
+metadata:
+  name: order-gateway
+  namespace: testns
+spec:
+  selector:
+    istio: ingressgateway
+  servers:
+  - port:
+      number: 80
+      name: http
+      protocol: HTTP
+    hosts:
+    - "aeb80b12b43404414bfb1a14e7095a57-1515628331.ap-south-1.elb.amazonaws.com"

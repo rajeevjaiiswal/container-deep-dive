@@ -1,0 +1,18 @@
+Check mount point: 
+kubectl exec -it <provisioner name> -n storage -- /bin/sh
+ls -al /efs-mount
+
+
+
+
+List last few files written at mount point:
+
+Writer POD:
+kubectl exec -it efs-writer -n storage -- tail /shared/out.txt
+
+Reader POD:
+kubectl exec -it efs-reader -n storage -- tail /shared/out.txt
+
+Provisioner: 
+kubectl exec -it <provisioner name> -n storage -- tail -f /efs-mount/<mounted storage id>/out.txt
+

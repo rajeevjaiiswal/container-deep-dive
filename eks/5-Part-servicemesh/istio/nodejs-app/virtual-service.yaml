@@ -1,0 +1,16 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: order-vs
+  namespace: testns
+spec:
+  hosts:
+  - "aeb80b12b43404414bfb1a14e7095a57-1515628331.ap-south-1.elb.amazonaws.com"
+  gateways:
+  - order-gateway
+  http:
+  - route:
+      - destination:
+          host: order-svc
+          port: 
+            number: 8080
