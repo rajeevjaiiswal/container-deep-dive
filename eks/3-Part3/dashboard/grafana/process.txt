@@ -1,4 +1,4 @@
-Install through Helm Chart:
+Install through Helm Chart (Make sure Helm is setup on local machine)s:
 
 
 Prometheus:

@@ -5,7 +5,7 @@ metadata:
   namespace: testns
 spec:
   hosts:
-  - "aeb80b12b43404414bfb1a14e7095a57-1515628331.ap-south-1.elb.amazonaws.com"
+  - "LB URL"
   gateways:
   - myweb-gateway
   http:

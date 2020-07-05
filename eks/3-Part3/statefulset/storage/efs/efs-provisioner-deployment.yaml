@@ -119,7 +119,7 @@ spec:
       volumes:
       - name: pv-volume
         nfs:
-          server: fs-7733bfa6.efs.ap-south-1.amazonaws.com
+          server: fs-777777.efs.ap-south-1.amazonaws.com
           path: /data
 
 ---
@@ -132,4 +132,4 @@ data:
   file.system.id: fs-7733bfa6
   aws.region: ap-south-1
   provisioner.name: aws.io/aws-efs
-  dns.name: "fs-7733bfa6.efs.ap-south-1.amazonaws.com"
+  dns.name: "fs-7777777s.efs.ap-south-1.amazonaws.com"
