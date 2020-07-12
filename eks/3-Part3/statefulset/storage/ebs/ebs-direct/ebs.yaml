@@ -3,6 +3,8 @@ kind: Pod
 metadata:
   name: ebs-container
 spec:
+  nodeSelector:
+      disktype: ssd
   containers:
   - image: nginx
     name: nginx-container
@@ -12,7 +14,7 @@ spec:
   volumes:
   - name: test-volume
     # This AWS EBS volume must already exist.
-    # aws ec2 create-volume --availability-zone ap-south-1a --size 10 --volume-type gp2
+    # aws ec2 create-volume --availability-zone ap-south-1a --size 1 --volume-type gp2
     awsElasticBlockStore:
-      volumeID: vol-0a751356cbeb135b5
+      volumeID: vol-02835cc829d660ffb
       fsType: ext4

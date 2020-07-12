@@ -1,0 +1,33 @@
+To Run Pod to specific node (availabily zone) first label node.
+kubectl label nodes <node-name> <label-key>=<label-value> 
+
+e.g. kubectl label nodes ip-192-168-15-64.us-west-2.compute.internal disktype=ssd
+
+
+Check node availabily zone :
+
+kubectl describe node <insert-node-name-here>
+
+
+
+Verify Label:
+kubectl get nodes --show-labels
+
+
+Add a nodeSelector field to your pod configuration:
+
+e.g.
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nginx
+  labels:
+    env: test
+spec:
+  nodeSelector:
+    disktype: ssd
+  containers:
+  - name: nginx
+    image: nginx
+ 
