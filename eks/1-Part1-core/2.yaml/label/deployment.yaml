@@ -6,7 +6,7 @@ metadata:
     app: inventory
 spec:
   #type: LoadBalancer
-  #type: NodePort
+  type: NodePort
   ports:
   - port: 8081
   selector:
