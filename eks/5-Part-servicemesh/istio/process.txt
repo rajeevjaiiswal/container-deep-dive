@@ -1,10 +1,23 @@
+Create Namespace:
+
+Kubectl create ns testns
+
+
+Enable Istio:
+kubectl label ns testns istio-injection=enabled
+
+
+Verify Label:
+kubectl get ns --show-labels
+
+
+
+
 ====================
 Generate Traffic
 ====================
 
-watch curl -s -o /dev/null http://aeb80b12b43404414bfb1a14e7095a57-1515628331.ap-south-1.elb.amazonaws.com
-
-
+watch curl -s -o /dev/null <istio ingress LB:app port>
 
 =================================
 Istio objects

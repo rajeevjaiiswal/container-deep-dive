@@ -28,10 +28,12 @@ Use value in template:
 
 Commands:
 
-helm install/upgrade myapi myAPI/ --set replicaCount.firstService=1 --set replicaCount.secondService=1
+helm install myapi myAPI/ --set replicaCount.firstService=1 --set replicaCount.secondService=1
+
+helm upgrade myapi myAPI/ --set replicaCount.firstService=1 --set replicaCount.secondService=2
 
 
 ====================================================
 Rollback
 =====================================================
- Helm rollback <chartname>
+ Helm rollback myapi 

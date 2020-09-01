@@ -5,7 +5,7 @@ metadata:
   namespace: testns
 spec:
   hosts:
-  - "LB URL"
+  - "*"
   gateways:
   - myweb-gateway
   http:

@@ -1,13 +1,22 @@
 kubectl create namespace mysql
 
+Kubectl apply -f <all 3 yamls>
+
+
+Verify Statefulset:   
+
+kubectl -n mysql rollout status statefulset mysql
 
 
 
-Verify Statefulset:   kubectl -n mysql rollout status statefulset mysql
+List PVs : 
+
+kubectl -n mysql get pvc -l app=mysql
 
 
+Test Headless and Normal Service:
 
-List PVs : kubectl -n mysql get pvc -l app=mysql
+nslookup <servicename>
 
 
 
@@ -35,6 +44,12 @@ Read - LB:
 kubectl -n mysql run mysql-client-loop --image=mysql:5.7 -i -t --rm --restart=Never --\
    bash -ic "while sleep 1; do mysql -h mysql-read -e 'SELECT @@server_id,NOW()'; done"
 
+
+
+Delete Pods:
+
+kubectl delete pods <podname>
+kubectl delete pods <pod> --grace-period=0 --force
 
 
 
