@@ -1,5 +1,8 @@
 Deploy Metric Server:
 
+(Pre-requisite : Helm repo setup)
+helm repo add stable https://charts.helm.sh/stable
+
 # create the metrics-service namespace first
 kubectl create namespace metrics
  
@@ -8,8 +11,7 @@ helm install metrics-server \
     --version 2.9.0 \
     --namespace metrics 
  
-(Pre-requisite : Helm repo setup)
-helm repo add stable https://kubernetes-charts.storage.googleapis.com/
+
  
 Validate metric-server:
  
@@ -37,8 +39,7 @@ kubectl get hpa
 
 Generate Load: 
 
-kubectl run -i --tty load-generator --image=busybox /bin/sh
+kubectl run -i --tty load-generator --rm --image=busybox --restart=Never -- /bin/sh -c "while sleep 0.01; do wget -q -O- http://php-apache; done"
 
-while true; do wget -q -O - http://php-apache; done
 
 Exit Load Test post testing:  ^C, ^D

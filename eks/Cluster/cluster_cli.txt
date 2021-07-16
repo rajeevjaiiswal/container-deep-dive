@@ -1,3 +1,34 @@
+VPC/Role setup - https://docs.aws.amazon.com/eks/latest/userguide/getting-started-console.html
+
+eksctl create cluster \
+--name fargate-cluster \
+--region ap-south-01 \
+--fargate
+
+
+aws eks update-kubeconfig \
+  --region ap-south-1 \
+  --name fargate-test-cluster
+
+
+
+
+
+aws --region ap-south-1 eks update-kubeconfig --name fargate-test-cluster --role-arn arn:aws:iam::438257776260:role/eks-admin
+
+
+
+
+
+
+
+
+
+
+
+
+=======================================================
+
 CLI ->   
 
 eksctl create cluster \
@@ -17,7 +48,6 @@ eksctl create cluster \
 
 Node group IAM policy:
 
-This command give node group required IAM access on autoscalability group API-
 
 
 {
